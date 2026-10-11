@@ -6,101 +6,126 @@
 <meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
 <meta name="googlebot" content="noindex, nofollow">
 <meta name="referrer" content="no-referrer">
-<meta name="theme-color" content="#0B7A75">
+<meta name="theme-color" content="#101B2B">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
 <title>Lua de Mel Recife–Maceió</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Instrument+Sans:wght@400;500;600&display=swap">
 <style>
-/* Layout: mobile first — a travel diary; sticky strip of days, each day a "page" with plan + restaurant cards. Wider screens only add columns. */
+/* Layout: mobile-first concierge itinerary — compact trip sheet, sticky day selector, each day = timeline + restaurant list rows. Desktop adds a left date rail. */
 :root{
-  --bg:#F4F8F7; --surface:#FFFFFF; --fg:#15302E; --muted:#56706D; --line:#D6E3E0;
-  --sea:#0B7A75; --sea-soft:#DDF0EE; --sun:#F2B33D; --sun-soft:#FDF1D6; --closed:#B4442B; --on-sun:#1D1A10;
-  --display:"Young Serif", Georgia, "Times New Roman", serif;
-  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --bg:#F6F7F8; --surface:#FFFFFF; --ink:#101B2B; --muted:#5E6878; --faint:#8A93A1; --line:#E2E5EA;
+  --accent:#0E6B66; --accent-soft:#E6F1F0; --warn:#A8402A; --warn-soft:#F8ECE8;
+  --display:"Newsreader", Georgia, "Times New Roman", serif;
+  --body:"Instrument Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
-  --bg:#0E1A1A; --surface:#152524; --fg:#E6F1EF; --muted:#9DB6B2; --line:#26403E;
-  --sea:#4FC8BF; --sea-soft:#163B39; --sun:#F2B33D; --sun-soft:#3A2F14; --closed:#F08A6E; color-scheme:dark}}
+  --bg:#0C1118; --surface:#131A23; --ink:#E9EDF2; --muted:#A3ACB9; --faint:#7B8594; --line:#232D3A;
+  --accent:#5CC2B9; --accent-soft:#12302F; --warn:#EE8F74; --warn-soft:#33201B; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#0E1A1A; --surface:#152524; --fg:#E6F1EF; --muted:#9DB6B2; --line:#26403E;
-  --sea:#4FC8BF; --sea-soft:#163B39; --sun:#F2B33D; --sun-soft:#3A2F14; --closed:#F08A6E; color-scheme:dark}
+  --bg:#0C1118; --surface:#131A23; --ink:#E9EDF2; --muted:#A3ACB9; --faint:#7B8594; --line:#232D3A;
+  --accent:#5CC2B9; --accent-soft:#12302F; --warn:#EE8F74; --warn-soft:#33201B; color-scheme:dark}
 *{box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
-.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15.5px;line-height:1.55;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent;font-feature-settings:"ss01"}
+a{color:inherit}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:16px;padding-block:24px 56px}
+.label{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
 
-/* Hero */
-header.hero{display:grid;gap:10px;padding-block:8px 16px}
-.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);font-weight:700}
-h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,9vw,58px);line-height:1.05;margin:0;text-wrap:balance}
-.lede{color:var(--muted);margin:0;font-size:15px;max-width:62ch}
-.route{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:600;font-size:13px}
-.route span.city{background:var(--sea-soft);color:var(--sea);padding:4px 10px;border-radius:999px}
-.route span.arrow{color:var(--muted)}
+/* Trip sheet */
+header.trip{display:grid;gap:18px;padding-bottom:22px;border-bottom:1px solid var(--line)}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand .mark{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.brand .year{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(34px,10vw,64px);line-height:1;letter-spacing:-.02em;margin:0;text-wrap:balance}
+h1 em{font-style:italic;color:var(--accent)}
+.intro{margin:0;color:var(--muted);max-width:58ch}
+dl.facts{display:grid;grid-template-columns:1fr 1fr;gap:14px 16px;margin:0}
+dl.facts div{display:grid;gap:2px;min-width:0}
+dl.facts dt{font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+dl.facts dd{margin:0;font-weight:500;font-variant-numeric:tabular-nums}
 
-/* Day strip: swipeable on phones */
-nav.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:8px 16px;overflow-x:auto;display:flex;gap:6px;scrollbar-width:none;scroll-snap-type:x proximity}
+/* Day selector */
+nav.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:color-mix(in srgb,var(--bg) 92%,transparent);-webkit-backdrop-filter:saturate(1.4) blur(10px);backdrop-filter:saturate(1.4) blur(10px);border-bottom:1px solid var(--line);margin-inline:-16px;padding:10px 16px;display:flex;gap:4px;overflow-x:auto;scrollbar-width:none;scroll-snap-type:x proximity}
 nav.days::-webkit-scrollbar{display:none}
-nav.days a{flex:0 0 auto;min-width:52px;min-height:48px;scroll-snap-align:start;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font-size:12px;line-height:1.15;text-align:center;font-variant-numeric:tabular-nums}
-nav.days a b{display:block;font-family:var(--display);font-weight:400;font-size:19px}
-nav.days a.on{background:var(--sea);border-color:var(--sea);color:var(--surface)}
-nav.days a:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+nav.days a{flex:0 0 auto;scroll-snap-align:start;display:grid;justify-items:center;min-width:50px;min-height:48px;padding:5px 8px;border-radius:10px;text-decoration:none;color:var(--muted);font-variant-numeric:tabular-nums}
+nav.days a span{font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase}
+nav.days a b{font-family:var(--display);font-weight:500;font-size:20px;line-height:1.1;color:var(--ink)}
+nav.days a.on{background:var(--ink);color:var(--bg)}
+nav.days a.on b{color:var(--bg)}
+nav.days a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* Day */
-section.day{padding-block:28px 8px;border-bottom:1px dashed var(--line);scroll-margin-top:72px}
-.dayhead{display:flex;gap:12px;align-items:flex-start}
-.datebox{flex:0 0 auto;width:54px;text-align:center;border:1.5px solid var(--fg);border-radius:12px;padding:5px 0;font-variant-numeric:tabular-nums}
-.datebox .d{font-family:var(--display);font-size:26px;line-height:1}
-.datebox .w{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.dayhead .t{min-width:0}
-.where{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sea);font-weight:700}
-h2{font-family:var(--display);font-weight:400;font-size:clamp(22px,6vw,32px);margin:2px 0 6px;line-height:1.15;text-wrap:balance}
-.summary{margin:0;color:var(--muted);font-size:15px;max-width:65ch}
-ul.plan{list-style:none;padding:0;margin:16px 0 18px;display:grid;gap:10px;max-width:70ch}
-ul.plan li{display:grid;gap:0}
-ul.plan li .when{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.tip{background:var(--sun-soft);border-radius:10px;padding:10px 14px;font-size:14px;max-width:70ch;margin:0 0 18px}
-h3.eat{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
+section.day{display:grid;gap:18px;padding-block:32px;border-bottom:1px solid var(--line);scroll-margin-top:72px}
+.rail{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.rail .num{font-family:var(--display);font-size:44px;line-height:.9;font-weight:400;letter-spacing:-.02em;font-variant-numeric:lining-nums tabular-nums}
+.rail .meta{display:grid;gap:1px}
+.rail .wd{font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.rail .place{font-size:12px;color:var(--accent);font-weight:600}
+.content{display:grid;gap:20px;min-width:0}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(24px,6.5vw,34px);line-height:1.12;letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.summary{margin:0;color:var(--muted);max-width:62ch}
 
-/* Cards: one column on phones */
-.cards{display:grid;grid-template-columns:1fr;gap:12px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
-.card .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
-.card h4{margin:0;font-size:17.5px;font-weight:700;line-height:1.25;min-width:0}
-.tag{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sea);background:var(--sea-soft);padding:3px 8px;border-radius:999px}
-.why{margin:0;font-size:14.5px}
-.addr{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
-.addr span{min-width:0;flex:1;user-select:all}
-.copy{flex:0 0 auto;min-height:36px;border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:12.5px;border-radius:8px;padding:0 10px;cursor:pointer}
-.copy:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
-.hours{font-size:13.5px}
-.hours.warn{color:var(--closed);font-weight:600}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:4px}
-.actions .btn.site{grid-column:1 / -1}
-.btn{display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;text-decoration:none;font-size:14.5px;font-weight:700;border-radius:11px;padding:0 12px;border:1px solid var(--line);color:var(--fg)}
-.btn.maps{background:var(--sea);border-color:var(--sea);color:var(--surface)}
-.btn.waze{background:var(--sun);border-color:var(--sun);color:var(--on-sun)}
+/* Timeline */
+ol.timeline{list-style:none;margin:0;padding:0;display:grid;gap:0;max-width:66ch}
+ol.timeline li{position:relative;display:grid;gap:1px;padding:0 0 14px 22px}
+ol.timeline li::before{content:"";position:absolute;left:4px;top:7px;width:7px;height:7px;border-radius:50%;background:var(--surface);border:1.5px solid var(--accent)}
+ol.timeline li::after{content:"";position:absolute;left:7.25px;top:18px;bottom:2px;width:1px;background:var(--line)}
+ol.timeline li:last-child{padding-bottom:0}
+ol.timeline li:last-child::after{display:none}
+ol.timeline .when{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+
+.note{display:flex;gap:10px;align-items:flex-start;background:var(--warn-soft);color:var(--ink);border-radius:10px;padding:11px 14px;font-size:14px;max-width:66ch;margin:0}
+.note::before{content:"!";flex:0 0 auto;width:18px;height:18px;border-radius:50%;background:var(--warn);color:var(--surface);font-weight:700;font-size:12px;display:grid;place-items:center;margin-top:1px}
+
+/* Restaurants */
+.eat-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;border-bottom:1px solid var(--ink);padding-bottom:8px}
+.eat-head h3{margin:0;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.eat-head .count{font-size:12px;color:var(--faint);font-variant-numeric:tabular-nums}
+.places{list-style:none;margin:0;padding:0;display:grid}
+.place-row{display:grid;gap:8px;padding-block:16px;border-bottom:1px solid var(--line);min-width:0}
+.place-row .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.place-row h4{margin:0;font-family:var(--display);font-weight:500;font-size:21px;line-height:1.2;min-width:0}
+.cat{flex:0 0 auto;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.why{margin:0;color:var(--muted);font-size:14.5px;max-width:62ch}
+.info{display:grid;gap:4px;font-size:13.5px}
+.info .line{display:flex;gap:8px;align-items:flex-start;min-width:0}
+.info svg{flex:0 0 auto;width:15px;height:15px;margin-top:2px;color:var(--faint)}
+.info .addr{min-width:0;flex:1;user-select:all}
+.info .hrs{font-variant-numeric:tabular-nums}
+.info .hrs.warn{color:var(--warn);font-weight:600}
+.copy{flex:0 0 auto;border:0;background:none;color:var(--accent);font:inherit;font-size:12.5px;font-weight:600;padding:0 0 0 4px;min-height:24px;cursor:pointer}
+.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding-top:4px}
+.actions.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+.btn{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:0 10px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;font-size:14px;font-weight:600;white-space:nowrap}
+.btn.primary{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.btn svg{width:15px;height:15px;flex:0 0 auto}
 .btn:active{transform:scale(.98)}
-.btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
-.btn svg{width:16px;height:16px}
-footer{padding-block:28px 0;color:var(--muted);font-size:13.5px;display:grid;gap:10px;max-width:70ch}
-footer a{color:var(--sea)}
+.btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-/* Larger screens: more room, more columns */
-@media (min-width:640px){
-  .wrap{padding-inline:24px;padding-block:32px 64px}
-  .lede{font-size:16px}
-  nav.days{margin-inline:-24px;padding-inline:24px}
-  .datebox{width:64px}.datebox .d{font-size:30px}
-  ul.plan li{grid-template-columns:96px 1fr;gap:12px}
-  ul.plan li .when{padding-top:3px}
-  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-  .card{padding:16px}
-  .actions{display:flex;flex-wrap:wrap}
-  .btn{min-height:40px;font-size:13.5px}
-  .btn:hover{filter:brightness(1.07)}
-  .copy:hover{color:var(--sea);border-color:var(--sea)}
+footer{display:grid;gap:12px;padding-block:28px 0;color:var(--muted);font-size:13.5px;max-width:70ch}
+footer p{margin:0}
+footer a{color:var(--accent)}
+footer strong{color:var(--ink);font-weight:600}
+
+/* Tablet and up */
+@media (min-width:720px){
+  body{font-size:16px}
+  .wrap{padding-inline:32px;padding-block:40px 72px}
+  nav.days{margin-inline:-32px;padding-inline:32px}
+  header.trip{grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);align-items:end;column-gap:48px}
+  header.trip .brand{grid-column:1 / -1}
+  dl.facts{grid-template-columns:1fr 1fr}
+  section.day{grid-template-columns:150px minmax(0,1fr);gap:32px;padding-block:44px}
+  .rail{position:sticky;top:96px;align-self:start;flex-direction:column;gap:10px}
+  .rail .num{font-size:64px}
+  .places{grid-template-columns:repeat(2,minmax(0,1fr));column-gap:32px}
+  .actions,.actions.three{display:flex;flex-wrap:wrap}
+  .btn{min-height:38px;font-size:13.5px;padding:0 14px}
+  .btn:hover{border-color:var(--ink)}
+  .btn.primary:hover{opacity:.88}
+  .copy:hover{text-decoration:underline}
 }
-@media (min-width:960px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
 </style>
 </head>
@@ -108,20 +133,27 @@ footer a{color:var(--sea)}
 
 
 <div class="wrap">
-  <header class="hero">
-    <div class="eyebrow">Lua de mel · 8 a 15 de novembro de 2026</div>
-    <h1>Recife &amp; Maceió a dois</h1>
-    <p class="lede">O roteiro dia a dia com os restaurantes escolhidos para cada parada. Cada card leva direto ao Google Maps (fotos e avaliações do lugar) ou ao Waze para navegar até lá.</p>
-    <div class="route"><span class="city">Recife · 8–11/11</span><span class="arrow">→</span><span class="city">Maceió · 11–20/11</span></div>
+  <header class="trip">
+    <div class="brand"><span class="mark">Roteiro de lua de mel</span><span class="year">Nov 2026</span></div>
+    <div>
+      <h1>Recife <em>&amp;</em> Maceió</h1>
+      <p class="intro" style="margin-top:14px">Oito dias pelo litoral de Pernambuco e Alagoas, com o plano de cada dia e os restaurantes escolhidos para cada parada. Toque em um restaurante para abrir no Google Maps (fotos e avaliações) ou navegar pelo Waze.</p>
+    </div>
+    <dl class="facts">
+      <div><dt>Datas</dt><dd>8 a 15 de novembro</dd></div>
+      <div><dt>Chegada</dt><dd>Recife, dom 8/11, 16h</dd></div>
+      <div><dt>Recife</dt><dd>3 noites, 8 a 11/11</dd></div>
+      <div><dt>Maceió</dt><dd>A partir de 11/11</dd></div>
+    </dl>
   </header>
 
   <nav class="days" id="daynav" aria-label="Dias da viagem"></nav>
   <main id="days"></main>
 
   <footer>
-    <div><strong>Horários:</strong> conferidos no Google Maps em outubro de 2026. Restaurantes mudam horário em feriados, então confirmem antes de ir, principalmente no dia 15/11 (feriado).</div>
-    <div><strong>Marés:</strong> as piscinas naturais de Porto de Galinhas e da Pajuçara só aparecem na maré baixa. Vejam a tábua de marés e troquem os dias se precisar.</div>
-    <div>Indicações reunidas de <a href="https://guia.melhoresdestinos.com.br/onde-comer-recife.html" target="_blank" rel="noopener">Melhores Destinos</a>, <a href="https://www.viajenaviagem.com/?p=246372" target="_blank" rel="noopener">Viaje na Viagem</a>, <a href="https://www.viciadaemviajar.com/onde-comer-em-maceio/" target="_blank" rel="noopener">Viciada em Viajar</a> e <a href="https://www.essemundoenosso.com.br/o-que-fazer-em-sao-miguel-dos-milagres/" target="_blank" rel="noopener">Esse Mundo é Nosso</a>.</div>
+    <p><strong>Horários</strong> conferidos no Google Maps em outubro de 2026. Confirmem antes de sair, principalmente em 15/11, que é feriado.</p>
+    <p><strong>Marés.</strong> As piscinas naturais de Porto de Galinhas e da Pajuçara só aparecem na maré baixa. Consultem a tábua de marés e troquem a ordem dos dias se precisar.</p>
+    <p>Indicações reunidas de <a href="https://guia.melhoresdestinos.com.br/onde-comer-recife.html" target="_blank" rel="noopener">Melhores Destinos</a>, <a href="https://www.viajenaviagem.com/?p=246372" target="_blank" rel="noopener">Viaje na Viagem</a>, <a href="https://www.viciadaemviajar.com/onde-comer-em-maceio/" target="_blank" rel="noopener">Viciada em Viajar</a> e <a href="https://www.essemundoenosso.com.br/o-que-fazer-em-sao-miguel-dos-milagres/" target="_blank" rel="noopener">Esse Mundo é Nosso</a>.</p>
   </footer>
 </div>
 
@@ -167,12 +199,12 @@ const DAYS = [
   eat:[["oficina","Terça: 11h30 às 22h"],["spedro","Terça: só almoço, 12h às 15h"],["mercado","Terça: 6h às 18h"]]},
  {id:"d11",d:11,w:"Qua",where:"Maceió · Ponta Verde",title:"Estrada até Maceió",summary:"Saída às 8h e chegada na hora do almoço. Tarde leve e jantar especial.",
   plan:[["8h","Saída de Recife."],["Almoço","Na orla de Pajuçara ou Ponta Verde, logo após o check-in."],["Tarde","Praia de Ponta Verde."],["Noite","Jantar na Jatiúca ou em Ponta Verde."]],
-  tip:"<strong>Atenção:</strong> o Lopana fecha às quartas, por isso ele ficou para quinta.",
-  eat:[["wanchako","Quarta: jantar das 18h às 23h (fecha domingo)"],["divina","Quarta: 11h30 à meia-noite"],["maria","Quarta: 12h às 16h e 18h à meia-noite"]]},
+  tip:"O Lopana fecha às quartas, por isso ele ficou para quinta.",
+  eat:[["wanchako","Quarta: jantar das 18h às 23h"],["divina","Quarta: 11h30 à meia-noite"],["maria","Quarta: 12h às 16h e 18h à meia-noite"]]},
  {id:"d12",d:12,w:"Qui",where:"Maceió · Pajuçara",title:"Piscinas naturais da Pajuçara",summary:"O cartão-postal de Maceió: jangada até as piscinas a cerca de 2 km da costa, na maré baixa.",
   plan:[["Manhã","Jangada até as piscinas naturais; levem snorkel."],["Tarde","Livre: piscina do hotel, massagem ou cochilo."],["Noite","Feirinha de Artesanato da Pajuçara e jantar."]],
   eat:[["lopana","Quinta: 7h30 à meia-noite"],["picui","Quinta: só almoço, 11h às 17h"],["imperador","Quinta: 11h30 às 23h30"],["bodega","Quinta: 12h às 16h e 18h às 22h"]]},
- {id:"d13",d:13,w:"Sex",where:"São Miguel dos Milagres",title:"Rota Ecológica e peixe-boi",summary:"O dia mais \"lua de mel\" da viagem, a cerca de 2h de Maceió. Vale carro alugado ou passeio contratado.",
+ {id:"d13",d:13,w:"Sex",where:"São Miguel dos Milagres",title:"Rota Ecológica e peixe-boi",summary:"O dia mais especial da viagem, a cerca de 2h de Maceió. Vale carro alugado ou passeio contratado.",
   plan:[["Manhã","Praia do Patacho e Praia do Toque."],["Peixe-boi","Jangada pelo Rio Tatuamunha com a Associação Peixe-boi, cerca de R$ 100 por pessoa, com reserva."],["Fim de tarde","Pôr do sol na praia antes de voltar."]],
   eat:[["tacho","Sexta: 11h30 às 15h30 e 18h30 às 21h"],["toque","Sexta: 9h às 17h"],["quintal","Sexta: 12h às 15h e 19h às 21h; reservem"]]},
  {id:"d14",d:14,w:"Sáb",where:"Barra de São Miguel",title:"Falésias e Praia do Gunga",summary:"Falésias coloridas e uma faixa de areia entre o mar e a lagoa, a cerca de 40 minutos de Maceió.",
@@ -180,36 +212,48 @@ const DAYS = [
   eat:[["gunga","Sábado: 8h às 17h"],["alagoana","Sábado: 11h à meia-noite"]]},
  {id:"d15",d:15,w:"Dom",where:"Francês e Massagueira",title:"Praia e pôr do sol na lagoa",summary:"Praia do Francês pela manhã e fim de tarde na Lagoa Mundaú. É feriado, então esperem movimento.",
   plan:[["Manhã","Praia do Francês: piscina natural de um lado, ondas do outro."],["Fim de tarde","Massagueira, à beira da Lagoa Mundaú, com sururu e peixe frito."],["Noite","Último jantar a dois em Maceió."]],
-  tip:"<strong>Atenção:</strong> o Wanchako fecha aos domingos. Para o jantar, Maria Antonieta ou Divina Gula estão abertos.",
+  tip:"O Wanchako fecha aos domingos. Para o jantar, Maria Antonieta e Divina Gula estão abertos.",
   eat:[["massag","Domingo: 10h às 18h; cheguem antes do pôr do sol"],["maria","Domingo: 11h30 às 23h"],["divina","Domingo: 11h30 à meia-noite"]]}
 ];
 
-const pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5" fill="currentColor"/></svg>';
-const nav='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z" fill="currentColor"/></svg>';
+const I = {
+  pin:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.2"/></svg>',
+  clock:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/></svg>',
+  map:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3.5 6v14L9 18l6 2 5.5-2V4L15 6 9 4z"/><path d="M9 4v14M15 6v14"/></svg>',
+  nav:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M20 4 4 11l7 2 2 7 7-16z"/></svg>',
+  link:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>'
+};
 const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
 
-document.getElementById("daynav").innerHTML = DAYS.map(d=>`<a href="#${d.id}">${d.w}<b>${d.d}</b></a>`).join("");
+document.getElementById("daynav").innerHTML = DAYS.map(d=>`<a href="#${d.id}"><span>${d.w}</span><b>${d.d}</b></a>`).join("");
 document.getElementById("days").innerHTML = DAYS.map(d=>`
 <section class="day" id="${d.id}">
-  <div class="dayhead">
-    <div class="datebox"><div class="d">${d.d}</div><div class="w">${d.w} · nov</div></div>
-    <div class="t"><div class="where">${d.where}</div><h2>${d.title}</h2><p class="summary">${d.summary}</p></div>
+  <div class="rail">
+    <div class="num">${d.d}</div>
+    <div class="meta"><span class="wd">${d.w} · Nov</span><span class="place">${d.where}</span></div>
   </div>
-  <ul class="plan">${d.plan.map(p=>`<li><span class="when">${p[0]}</span><span>${p[1]}</span></li>`).join("")}</ul>
-  ${d.tip?`<p class="tip">${d.tip}</p>`:""}
-  <h3 class="eat">Onde comer</h3>
-  <div class="cards">${d.eat.map(([k,h,warn])=>{const r=R[k];return `
-    <article class="card">
-      <div class="top"><h4>${r.n}</h4><span class="tag">${r.tag}</span></div>
-      <p class="why">${r.why}</p>
-      <div class="addr"><span>${esc(r.a)}</span><button class="copy" type="button" data-copy="${esc(r.a)}">Copiar</button></div>
-      <div class="hours${warn?" warn":""}">${h}</div>
-      <div class="actions">
-        <a class="btn maps" href="${G(r.cid)}" target="_blank" rel="noopener">${pin}Maps · fotos</a>
-        <a class="btn waze" href="${W(r.lat,r.lng)}" target="_blank" rel="noopener">${nav}Waze</a>
-        ${r.web?`<a class="btn site" href="${r.web}" target="_blank" rel="noopener">Site</a>`:""}
-      </div>
-    </article>`}).join("")}</div>
+  <div class="content">
+    <div><h2>${d.title}</h2><p class="summary">${d.summary}</p></div>
+    <ol class="timeline">${d.plan.map(p=>`<li><span class="when">${p[0]}</span><span>${p[1]}</span></li>`).join("")}</ol>
+    ${d.tip?`<p class="note">${d.tip}</p>`:""}
+    <div>
+      <div class="eat-head"><h3>Onde comer</h3><span class="count">${d.eat.length} opções</span></div>
+      <ul class="places">${d.eat.map(([k,h,warn])=>{const r=R[k];return `
+        <li class="place-row">
+          <div class="head"><h4>${r.n}</h4><span class="cat">${r.tag}</span></div>
+          <p class="why">${r.why}</p>
+          <div class="info">
+            <div class="line">${I.pin}<span class="addr">${esc(r.a)}</span><button class="copy" type="button" data-copy="${esc(r.a)}">Copiar</button></div>
+            <div class="line">${I.clock}<span class="hrs${warn?" warn":""}">${h}</span></div>
+          </div>
+          <div class="actions${r.web?" three":""}">
+            <a class="btn primary" href="${G(r.cid)}" target="_blank" rel="noopener">${I.map}Maps</a>
+            <a class="btn" href="${W(r.lat,r.lng)}" target="_blank" rel="noopener">${I.nav}Waze</a>
+            ${r.web?`<a class="btn" href="${r.web}" target="_blank" rel="noopener">${I.link}Site</a>`:""}
+          </div>
+        </li>`}).join("")}</ul>
+    </div>
+  </div>
 </section>`).join("");
 
 document.addEventListener("click",e=>{
@@ -218,9 +262,12 @@ document.addEventListener("click",e=>{
   const done=()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar",1500)};
   try{navigator.clipboard.writeText(t).then(done,()=>sel(b))}catch(_){sel(b)}
 });
-const links=[...document.querySelectorAll("nav.days a")];
-if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>{const on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("on",on);if(on)a.scrollIntoView({block:"nearest",inline:"nearest"})})}})},{rootMargin:"-30% 0px -60% 0px"});document.querySelectorAll("section.day").forEach(s=>io.observe(s));}
 function sel(b){const s=b.previousElementSibling;const r=document.createRange();r.selectNodeContents(s);const g=getSelection();g.removeAllRanges();g.addRange(r);}
+const links=[...document.querySelectorAll("nav.days a")];
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>{const on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("on",on);if(on)a.scrollIntoView({block:"nearest",inline:"nearest"})})}})},{rootMargin:"-35% 0px -55% 0px"});
+  document.querySelectorAll("section.day").forEach(s=>io.observe(s));
+}
 </script>
 
 </body>
