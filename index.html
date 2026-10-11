@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet, noimageindex">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#0B7A75">
+<title>Lua de Mel Recife–Maceió</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: mobile first — a travel diary; sticky strip of days, each day a "page" with plan + restaurant cards. Wider screens only add columns. */
+:root{
+  --bg:#F4F8F7; --surface:#FFFFFF; --fg:#15302E; --muted:#56706D; --line:#D6E3E0;
+  --sea:#0B7A75; --sea-soft:#DDF0EE; --sun:#F2B33D; --sun-soft:#FDF1D6; --closed:#B4442B; --on-sun:#1D1A10;
+  --display:"Young Serif", Georgia, "Times New Roman", serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0E1A1A; --surface:#152524; --fg:#E6F1EF; --muted:#9DB6B2; --line:#26403E;
+  --sea:#4FC8BF; --sea-soft:#163B39; --sun:#F2B33D; --sun-soft:#3A2F14; --closed:#F08A6E; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0E1A1A; --surface:#152524; --fg:#E6F1EF; --muted:#9DB6B2; --line:#26403E;
+  --sea:#4FC8BF; --sea-soft:#163B39; --sun:#F2B33D; --sun-soft:#3A2F14; --closed:#F08A6E; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55;-webkit-text-size-adjust:100%;-webkit-tap-highlight-color:transparent}
+.wrap{max-width:980px;margin:0 auto;padding-inline:16px;padding-block:20px 48px}
+
+/* Hero */
+header.hero{display:grid;gap:10px;padding-block:8px 16px}
+.eyebrow{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--sea);font-weight:700}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(32px,9vw,58px);line-height:1.05;margin:0;text-wrap:balance}
+.lede{color:var(--muted);margin:0;font-size:15px;max-width:62ch}
+.route{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-weight:600;font-size:13px}
+.route span.city{background:var(--sea-soft);color:var(--sea);padding:4px 10px;border-radius:999px}
+.route span.arrow{color:var(--muted)}
+
+/* Day strip: swipeable on phones */
+nav.days{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);border-bottom:1px solid var(--line);margin-inline:-16px;padding:8px 16px;overflow-x:auto;display:flex;gap:6px;scrollbar-width:none;scroll-snap-type:x proximity}
+nav.days::-webkit-scrollbar{display:none}
+nav.days a{flex:0 0 auto;min-width:52px;min-height:48px;scroll-snap-align:start;text-decoration:none;color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:5px 8px;font-size:12px;line-height:1.15;text-align:center;font-variant-numeric:tabular-nums}
+nav.days a b{display:block;font-family:var(--display);font-weight:400;font-size:19px}
+nav.days a.on{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+nav.days a:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+
+/* Day */
+section.day{padding-block:28px 8px;border-bottom:1px dashed var(--line);scroll-margin-top:72px}
+.dayhead{display:flex;gap:12px;align-items:flex-start}
+.datebox{flex:0 0 auto;width:54px;text-align:center;border:1.5px solid var(--fg);border-radius:12px;padding:5px 0;font-variant-numeric:tabular-nums}
+.datebox .d{font-family:var(--display);font-size:26px;line-height:1}
+.datebox .w{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.dayhead .t{min-width:0}
+.where{font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--sea);font-weight:700}
+h2{font-family:var(--display);font-weight:400;font-size:clamp(22px,6vw,32px);margin:2px 0 6px;line-height:1.15;text-wrap:balance}
+.summary{margin:0;color:var(--muted);font-size:15px;max-width:65ch}
+ul.plan{list-style:none;padding:0;margin:16px 0 18px;display:grid;gap:10px;max-width:70ch}
+ul.plan li{display:grid;gap:0}
+ul.plan li .when{font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tip{background:var(--sun-soft);border-radius:10px;padding:10px 14px;font-size:14px;max-width:70ch;margin:0 0 18px}
+h3.eat{font-size:12.5px;letter-spacing:.12em;text-transform:uppercase;margin:0 0 10px}
+
+/* Cards: one column on phones */
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.card .top{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+.card h4{margin:0;font-size:17.5px;font-weight:700;line-height:1.25;min-width:0}
+.tag{flex:0 0 auto;font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sea);background:var(--sea-soft);padding:3px 8px;border-radius:999px}
+.why{margin:0;font-size:14.5px}
+.addr{display:flex;gap:8px;align-items:center;font-size:13.5px;color:var(--muted)}
+.addr span{min-width:0;flex:1;user-select:all}
+.copy{flex:0 0 auto;min-height:36px;border:1px solid var(--line);background:transparent;color:var(--muted);font:inherit;font-size:12.5px;border-radius:8px;padding:0 10px;cursor:pointer}
+.copy:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.hours{font-size:13.5px}
+.hours.warn{color:var(--closed);font-weight:600}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:auto;padding-top:4px}
+.actions .btn.site{grid-column:1 / -1}
+.btn{display:flex;align-items:center;justify-content:center;gap:7px;min-height:46px;text-decoration:none;font-size:14.5px;font-weight:700;border-radius:11px;padding:0 12px;border:1px solid var(--line);color:var(--fg)}
+.btn.maps{background:var(--sea);border-color:var(--sea);color:var(--surface)}
+.btn.waze{background:var(--sun);border-color:var(--sun);color:var(--on-sun)}
+.btn:active{transform:scale(.98)}
+.btn:focus-visible{outline:2px solid var(--sea);outline-offset:2px}
+.btn svg{width:16px;height:16px}
+footer{padding-block:28px 0;color:var(--muted);font-size:13.5px;display:grid;gap:10px;max-width:70ch}
+footer a{color:var(--sea)}
+
+/* Larger screens: more room, more columns */
+@media (min-width:640px){
+  .wrap{padding-inline:24px;padding-block:32px 64px}
+  .lede{font-size:16px}
+  nav.days{margin-inline:-24px;padding-inline:24px}
+  .datebox{width:64px}.datebox .d{font-size:30px}
+  ul.plan li{grid-template-columns:96px 1fr;gap:12px}
+  ul.plan li .when{padding-top:3px}
+  .cards{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .card{padding:16px}
+  .actions{display:flex;flex-wrap:wrap}
+  .btn{min-height:40px;font-size:13.5px}
+  .btn:hover{filter:brightness(1.07)}
+  .copy:hover{color:var(--sea);border-color:var(--sea)}
+}
+@media (min-width:960px){.cards{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth}}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="hero">
+    <div class="eyebrow">Lua de mel · 8 a 15 de novembro de 2026</div>
+    <h1>Recife &amp; Maceió a dois</h1>
+    <p class="lede">O roteiro dia a dia com os restaurantes escolhidos para cada parada. Cada card leva direto ao Google Maps (fotos e avaliações do lugar) ou ao Waze para navegar até lá.</p>
+    <div class="route"><span class="city">Recife · 8–11/11</span><span class="arrow">→</span><span class="city">Maceió · 11–20/11</span></div>
+  </header>
+
+  <nav class="days" id="daynav" aria-label="Dias da viagem"></nav>
+  <main id="days"></main>
+
+  <footer>
+    <div><strong>Horários:</strong> conferidos no Google Maps em outubro de 2026. Restaurantes mudam horário em feriados, então confirmem antes de ir, principalmente no dia 15/11 (feriado).</div>
+    <div><strong>Marés:</strong> as piscinas naturais de Porto de Galinhas e da Pajuçara só aparecem na maré baixa. Vejam a tábua de marés e troquem os dias se precisar.</div>
+    <div>Indicações reunidas de <a href="https://guia.melhoresdestinos.com.br/onde-comer-recife.html" target="_blank" rel="noopener">Melhores Destinos</a>, <a href="https://www.viajenaviagem.com/?p=246372" target="_blank" rel="noopener">Viaje na Viagem</a>, <a href="https://www.viciadaemviajar.com/onde-comer-em-maceio/" target="_blank" rel="noopener">Viciada em Viajar</a> e <a href="https://www.essemundoenosso.com.br/o-que-fazer-em-sao-miguel-dos-milagres/" target="_blank" rel="noopener">Esse Mundo é Nosso</a>.</div>
+  </footer>
+</div>
+
+<script>
+const G = c => "https://maps.google.com/?cid=" + c;
+const W = (lat,lng) => `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
+const R = {
+  voar:{n:"Voar",tag:"Jantar especial",why:"Cozinha brasileira contemporânea, drinks autorais e salão bonito. A escolha para a primeira noite.",a:"R. Baltazar Pereira, 130 – Boa Viagem, Recife",lat:-8.1009327,lng:-34.8864069,cid:"84988825048556412",web:"https://grupoar2019.com.br/voar/"},
+  bode:{n:"Entre Amigos – O Bode",tag:"Nordestino",why:"Clássico de Boa Viagem, com carne de bode, pratos regionais e cardápio amplo.",a:"R. Marquês de Valença, 50 – Boa Viagem, Recife",lat:-8.128961,lng:-34.9030906,cid:"8755904051948741955"},
+  parra:{n:"Parraxaxá",tag:"Regional",why:"Buffet por quilo de comida pernambucana, com mesa de bolos e doces regionais.",a:"Av. Fernando Simões Barbosa, 1200 – Boa Viagem, Recife",lat:-8.1279966,lng:-34.9021569,cid:"14016965125105063363",web:"http://www.parraxaxa.com.br/"},
+  escr:{n:"Escritório Zona Sul",tag:"Caranguejo",why:"Bar de frutos do mar com caranguejo e pratos bem apresentados.",a:"R. Desembargador João Paes, 907 – Boa Viagem, Recife",lat:-8.1267468,lng:-34.9067236,cid:"9272900796580274114",web:"http://grupoescritorio.com.br/"},
+  beiju:{n:"Beijupirá",tag:"O mais famoso",why:"O restaurante mais conhecido da vila: peixe beijupirá, moquecas e camarão.",a:"R. Beijupirá, 90 – Porto de Galinhas, Ipojuca",lat:-8.5059344,lng:-35.0031637,cid:"13001558861245311544",web:"http://www.beijupira.com.br/"},
+  telha:{n:"Peixe na Telha",tag:"Pé na areia",why:"Na beira da praia, perto das piscinas naturais. Bom para o almoço depois da jangada.",a:"R. das Piscinas Naturais, 103 – Porto de Galinhas, Ipojuca",lat:-8.506744,lng:-35.000365,cid:"1801255796202365627",web:"http://www.peixenatelha.com.br/"},
+  barca:{n:"Barcaxeira",tag:"Nordestino",why:"Escondidinhos e comida sertaneja, muitas vezes com música ao vivo.",a:"R. Esperança, 458 – Porto de Galinhas, Ipojuca",lat:-8.5060377,lng:-35.0008916,cid:"15938329040225783585"},
+  domingos:{n:"Domingos",tag:"Romântico",why:"Ambiente charmoso e cardápio de carnes diferentes e lagosta. Para um jantar antes de voltar.",a:"R. Beijupirá, 128 – Porto de Galinhas, Ipojuca",lat:-8.5063781,lng:-35.0034637,cid:"8273105595904332098",web:"https://www.instagram.com/domingosrestaurante/"},
+  oficina:{n:"Oficina do Sabor",tag:"Vista de Olinda",why:"Famoso pelo jerimum recheado, com varanda olhando para Recife.",a:"R. do Amparo, 335 – Amparo, Olinda",lat:-8.0118589,lng:-34.8539123,cid:"12395413657736299387",web:"http://www.oficinadosabor.com/"},
+  spedro:{n:"São Pedro",tag:"Frutos do mar",why:"No Pátio de São Pedro, com arroz de polvo e frutos do mar de olhar afro-nordestino.",a:"Pátio de São Pedro, 33 – São José, Recife",lat:-8.0671552,lng:-34.8788657,cid:"1697850471170229598",web:"https://www.instagram.com/saopedrorestaurante/"},
+  mercado:{n:"Mercado da Boa Vista",tag:"Popular",why:"Mercado tradicional com petiscos, cerveja gelada e música ao vivo.",a:"R. da Santa Cruz, s/n – Boa Vista, Recife",lat:-8.0632166,lng:-34.8886154,cid:"4403725037619800892"},
+  wanchako:{n:"Wanchako",tag:"Peruano",why:"Um dos restaurantes mais celebrados de Maceió, de cozinha peruana com ingredientes alagoanos.",a:"R. Pref. Abdon Arroxelas, 147 – Ponta Verde, Maceió",lat:-9.6559197,lng:-35.6999124,cid:"4831240335500745737",web:"https://www.wanchako.com.br/"},
+  divina:{n:"Divina Gula",tag:"Mineiro-alagoano",why:"Comida mineira com ingredientes alagoanos e ambiente animado.",a:"Av. Eng. Paulo Brandão Nogueira, 85 – Jatiúca, Maceió",lat:-9.64634,lng:-35.704787,cid:"6818644489357180624",web:"http://www.digitalmenu.com.br/divinagula/"},
+  maria:{n:"Maria Antonieta",tag:"Italiano",why:"Massas e risotos num salão elegante, às vezes com piano.",a:"Av. Dr. Antônio Gomes de Barros, 150 – Jatiúca, Maceió",lat:-9.6509228,lng:-35.700968,cid:"12056549358949942291",web:"http://mariaantonieta-al.com.br/"},
+  lopana:{n:"Lopana",tag:"Beach bar",why:"Barraca de praia com música, mesas na areia e saída para as piscinas naturais.",a:"Av. Silvio Carlos Viana, 27 – Ponta Verde, Maceió",lat:-9.6638128,lng:-35.7039438,cid:"7852614775834602978",web:"http://www.lopana.com.br/"},
+  imperador:{n:"Imperador dos Camarões",tag:"Camarão",why:"Camarão em tudo, com destaque para o chiclete de camarão, de frente para a orla.",a:"Av. Dr. Antônio Gouveia, 21 – Pajuçara, Maceió",lat:-9.6651959,lng:-35.7099725,cid:"15722230586691329976",web:"http://www.instagram.com/imperadordoscamaroes"},
+  bodega:{n:"Bodega do Sertão",tag:"Regional",why:"Buffet nordestino com carne de sol e carne seca, num espaço decorado como uma casa sertaneja.",a:"R. Jangadeiros Alagoanos, 1185 – Pajuçara, Maceió",lat:-9.6639925,lng:-35.7105865,cid:"8620164016756552240"},
+  picui:{n:"Picuí",tag:"Carne de sol",why:"Famoso pela carne de sol e pelo arroz de polvo. Só abre para almoço.",a:"Av. da Paz, 1140 – Jaraguá, Maceió",lat:-9.6697744,lng:-35.7293762,cid:"16513853792090408526",web:"https://linktr.ee/picui"},
+  tacho:{n:"No Tacho",tag:"Ao lado do peixe-boi",why:"Em frente à Associação Peixe-boi. Moqueca de frutos do mar e espaguete com lagostim.",a:"R. Luiz Ferreira Dorta – Tatuamunha, Porto de Pedras",lat:-9.2138846,lng:-35.3372602,cid:"13602003586740062455",web:"https://www.instagram.com/restaurantenotacho1/"},
+  quintal:{n:"No Quintal",tag:"Romântico",why:"Quintal arborizado na Praia do Toque, com cozinha regional de chef. Jantar só com reserva.",a:"R. do Campo, s/n – Praia do Toque, São Miguel dos Milagres",lat:-9.250249,lng:-35.359757,cid:"10635309887251219477"},
+  toque:{n:"Milagres do Toque",tag:"Beach club",why:"Mesas na areia da Praia do Toque, com lagosta e camarão. Organiza passeio às piscinas naturais.",a:"R. Felisberto de Ataíde – Praia do Toque, São Miguel dos Milagres",lat:-9.2518148,lng:-35.353273,cid:"824531353724433722",web:"http://www.milagresdotoque.com.br/"},
+  gunga:{n:"Quiosque Gunga Beach",tag:"Na praia",why:"A principal estrutura de mesas e quiosques da Praia do Gunga. Prefiram pratos simples, como peixe frito.",a:"Praia do Gunga – Roteiro, AL",lat:-9.8603945,lng:-35.9052351,cid:"5832017627853940829"},
+  alagoana:{n:"Alagoana Choperia",tag:"Chope e petisco",why:"Choperia animada com música ao vivo, para fechar o sábado em Maceió.",a:"R. Dep. Luiz Gonzaga Coutinho, 125 – Jatiúca, Maceió",lat:-9.6513702,lng:-35.702963,cid:"12507710313915846690"},
+  massag:{n:"Massagueirinha Lagoa",tag:"Pôr do sol",why:"À beira da lagoa, com comida típica e música ao vivo aos domingos.",a:"AL-101 – Barra Nova, Marechal Deodoro",lat:-9.6941919,lng:-35.7865135,cid:"9310064069615300688",web:"https://www.instagram.com/massagueirinhalagoa/"}
+};
+
+const DAYS = [
+ {id:"d8",d:8,w:"Dom",where:"Recife · Boa Viagem",title:"Chegada e primeiro pôr do sol",summary:"Chegada às 16h, check-in e a primeira noite a dois na orla de Boa Viagem.",
+  plan:[["16h","Chegada e check-in, de preferência em Boa Viagem."],["Fim de tarde","Caminhada pelo calçadão com água de coco; a Feirinha de Boa Viagem funciona todos os dias."],["Noite","Jantar romântico no Pina ou em Boa Viagem."]],
+  eat:[["voar","Domingo: jantar das 19h à meia-noite"],["bode","Domingo: 11h à meia-noite"],["parra","Domingo: 11h30 às 22h"],["escr","Domingo: fecha às 21h",1]]},
+ {id:"d9",d:9,w:"Seg",where:"Porto de Galinhas",title:"Piscinas naturais e Muro Alto",summary:"Bate-volta de cerca de 1h30. Saiam cedo para pegar a maré baixa.",
+  plan:[["Manhã","Jangada até as piscinas naturais. Combinem o horário pela tábua de marés."],["Tarde","Praia de Muro Alto, de mar calmo como uma piscina."],["Por quê","Segunda é dia de praia: muitos restaurantes e museus de Recife fecham."]],
+  eat:[["beiju","Segunda: 12h às 23h30"],["telha","Segunda: 10h às 22h"],["barca","Segunda: 12h às 23h"],["domingos","Segunda: 14h às 23h"]]},
+ {id:"d10",d:10,w:"Ter",where:"Olinda e Recife",title:"Ladeiras, castelo e Marco Zero",summary:"O dia mais cultural: Olinda pela manhã, Instituto Ricardo Brennand à tarde e Recife Antigo ao entardecer.",
+  plan:[["Manhã","Olinda: ladeiras coloridas, Alto da Sé e Mosteiro de São Bento."],["Almoço","Oficina do Sabor, em Olinda, ou São Pedro, no centro de Recife."],["Tarde","Instituto Ricardo Brennand, castelo com jardins."],["Pôr do sol","Marco Zero e Rua do Bom Jesus, com barquinho até o Parque das Esculturas."]],
+  eat:[["oficina","Terça: 11h30 às 22h"],["spedro","Terça: só almoço, 12h às 15h"],["mercado","Terça: 6h às 18h"]]},
+ {id:"d11",d:11,w:"Qua",where:"Maceió · Ponta Verde",title:"Estrada até Maceió",summary:"Saída às 8h e chegada na hora do almoço. Tarde leve e jantar especial.",
+  plan:[["8h","Saída de Recife."],["Almoço","Na orla de Pajuçara ou Ponta Verde, logo após o check-in."],["Tarde","Praia de Ponta Verde."],["Noite","Jantar na Jatiúca ou em Ponta Verde."]],
+  tip:"<strong>Atenção:</strong> o Lopana fecha às quartas, por isso ele ficou para quinta.",
+  eat:[["wanchako","Quarta: jantar das 18h às 23h (fecha domingo)"],["divina","Quarta: 11h30 à meia-noite"],["maria","Quarta: 12h às 16h e 18h à meia-noite"]]},
+ {id:"d12",d:12,w:"Qui",where:"Maceió · Pajuçara",title:"Piscinas naturais da Pajuçara",summary:"O cartão-postal de Maceió: jangada até as piscinas a cerca de 2 km da costa, na maré baixa.",
+  plan:[["Manhã","Jangada até as piscinas naturais; levem snorkel."],["Tarde","Livre: piscina do hotel, massagem ou cochilo."],["Noite","Feirinha de Artesanato da Pajuçara e jantar."]],
+  eat:[["lopana","Quinta: 7h30 à meia-noite"],["picui","Quinta: só almoço, 11h às 17h"],["imperador","Quinta: 11h30 às 23h30"],["bodega","Quinta: 12h às 16h e 18h às 22h"]]},
+ {id:"d13",d:13,w:"Sex",where:"São Miguel dos Milagres",title:"Rota Ecológica e peixe-boi",summary:"O dia mais \"lua de mel\" da viagem, a cerca de 2h de Maceió. Vale carro alugado ou passeio contratado.",
+  plan:[["Manhã","Praia do Patacho e Praia do Toque."],["Peixe-boi","Jangada pelo Rio Tatuamunha com a Associação Peixe-boi, cerca de R$ 100 por pessoa, com reserva."],["Fim de tarde","Pôr do sol na praia antes de voltar."]],
+  eat:[["tacho","Sexta: 11h30 às 15h30 e 18h30 às 21h"],["toque","Sexta: 9h às 17h"],["quintal","Sexta: 12h às 15h e 19h às 21h; reservem"]]},
+ {id:"d14",d:14,w:"Sáb",where:"Barra de São Miguel",title:"Falésias e Praia do Gunga",summary:"Falésias coloridas e uma faixa de areia entre o mar e a lagoa, a cerca de 40 minutos de Maceió.",
+  plan:[["Manhã","Mirante das Falésias do Gunga."],["Dia","Praia do Gunga, com buggy pelas falésias ou lancha pela lagoa."],["Pôr do sol","Barra de São Miguel, antes de voltar."]],
+  eat:[["gunga","Sábado: 8h às 17h"],["alagoana","Sábado: 11h à meia-noite"]]},
+ {id:"d15",d:15,w:"Dom",where:"Francês e Massagueira",title:"Praia e pôr do sol na lagoa",summary:"Praia do Francês pela manhã e fim de tarde na Lagoa Mundaú. É feriado, então esperem movimento.",
+  plan:[["Manhã","Praia do Francês: piscina natural de um lado, ondas do outro."],["Fim de tarde","Massagueira, à beira da Lagoa Mundaú, com sururu e peixe frito."],["Noite","Último jantar a dois em Maceió."]],
+  tip:"<strong>Atenção:</strong> o Wanchako fecha aos domingos. Para o jantar, Maria Antonieta ou Divina Gula estão abertos.",
+  eat:[["massag","Domingo: 10h às 18h; cheguem antes do pôr do sol"],["maria","Domingo: 11h30 às 23h"],["divina","Domingo: 11h30 à meia-noite"]]}
+];
+
+const pin='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z"/><circle cx="12" cy="10" r="2.5" fill="currentColor"/></svg>';
+const nav='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l18-8-8 18-2-8-8-2z" fill="currentColor"/></svg>';
+const esc=s=>s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/"/g,"&quot;");
+
+document.getElementById("daynav").innerHTML = DAYS.map(d=>`<a href="#${d.id}">${d.w}<b>${d.d}</b></a>`).join("");
+document.getElementById("days").innerHTML = DAYS.map(d=>`
+<section class="day" id="${d.id}">
+  <div class="dayhead">
+    <div class="datebox"><div class="d">${d.d}</div><div class="w">${d.w} · nov</div></div>
+    <div class="t"><div class="where">${d.where}</div><h2>${d.title}</h2><p class="summary">${d.summary}</p></div>
+  </div>
+  <ul class="plan">${d.plan.map(p=>`<li><span class="when">${p[0]}</span><span>${p[1]}</span></li>`).join("")}</ul>
+  ${d.tip?`<p class="tip">${d.tip}</p>`:""}
+  <h3 class="eat">Onde comer</h3>
+  <div class="cards">${d.eat.map(([k,h,warn])=>{const r=R[k];return `
+    <article class="card">
+      <div class="top"><h4>${r.n}</h4><span class="tag">${r.tag}</span></div>
+      <p class="why">${r.why}</p>
+      <div class="addr"><span>${esc(r.a)}</span><button class="copy" type="button" data-copy="${esc(r.a)}">Copiar</button></div>
+      <div class="hours${warn?" warn":""}">${h}</div>
+      <div class="actions">
+        <a class="btn maps" href="${G(r.cid)}" target="_blank" rel="noopener">${pin}Maps · fotos</a>
+        <a class="btn waze" href="${W(r.lat,r.lng)}" target="_blank" rel="noopener">${nav}Waze</a>
+        ${r.web?`<a class="btn site" href="${r.web}" target="_blank" rel="noopener">Site</a>`:""}
+      </div>
+    </article>`}).join("")}</div>
+</section>`).join("");
+
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".copy"); if(!b) return;
+  const t=b.dataset.copy;
+  const done=()=>{b.textContent="Copiado";setTimeout(()=>b.textContent="Copiar",1500)};
+  try{navigator.clipboard.writeText(t).then(done,()=>sel(b))}catch(_){sel(b)}
+});
+const links=[...document.querySelectorAll("nav.days a")];
+if("IntersectionObserver" in window){const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){links.forEach(a=>{const on=a.getAttribute("href")==="#"+e.target.id;a.classList.toggle("on",on);if(on)a.scrollIntoView({block:"nearest",inline:"nearest"})})}})},{rootMargin:"-30% 0px -60% 0px"});document.querySelectorAll("section.day").forEach(s=>io.observe(s));}
+function sel(b){const s=b.previousElementSibling;const r=document.createRange();r.selectNodeContents(s);const g=getSelection();g.removeAllRanges();g.addRange(r);}
+</script>
+
+</body>
+</html>
