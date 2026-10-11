@@ -86,6 +86,7 @@ ol.timeline .when{font-size:11px;font-weight:600;letter-spacing:.12em;text-trans
 .place-row .head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .place-row h4{margin:0;font-family:var(--display);font-weight:500;font-size:21px;line-height:1.2;min-width:0}
 .cat{flex:0 0 auto;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.cat.bbq{color:var(--surface);background:var(--warn);padding:3px 8px;border-radius:999px}
 .why{margin:0;color:var(--muted);font-size:14.5px;max-width:62ch}
 .info{display:grid;gap:4px;font-size:13.5px}
 .info .line{display:flex;gap:8px;align-items:flex-start;min-width:0}
@@ -137,13 +138,15 @@ footer strong{color:var(--ink);font-weight:600}
     <div class="brand"><span class="mark">Roteiro de lua de mel</span><span class="year">Nov 2026</span></div>
     <div>
       <h1>Recife <em>&amp;</em> Maceió</h1>
-      <p class="intro" style="margin-top:14px">Oito dias pelo litoral de Pernambuco e Alagoas, com o plano de cada dia e os restaurantes escolhidos para cada parada. Toque em um restaurante para abrir no Google Maps (fotos e avaliações) ou navegar pelo Waze.</p>
+      <p class="intro" style="margin-top:14px">Oito dias pelo litoral de Pernambuco e Alagoas, com o plano de cada dia e os restaurantes escolhidos para cada parada. Churrascarias e rodízios aparecem primeiro, marcados em destaque. Toque em um restaurante para abrir no Google Maps (fotos e avaliações) ou navegar pelo Waze.</p>
     </div>
     <dl class="facts">
       <div><dt>Datas</dt><dd>8 a 15 de novembro</dd></div>
       <div><dt>Chegada</dt><dd>Recife, dom 8/11, 16h</dd></div>
       <div><dt>Recife</dt><dd>3 noites, 8 a 11/11</dd></div>
       <div><dt>Maceió</dt><dd>A partir de 11/11</dd></div>
+      <div><dt>Preferência</dt><dd>Rodízio e churrasco</dd></div>
+      <div><dt>Churrascarias</dt><dd>8 no roteiro</dd></div>
     </dl>
   </header>
 
@@ -161,6 +164,14 @@ footer strong{color:var(--ink);font-weight:600}
 const G = c => "https://maps.google.com/?cid=" + c;
 const W = (lat,lng) => `https://waze.com/ul?ll=${lat},${lng}&navigate=yes`;
 const R = {
+  ponteio:{n:"Ponteio Churrascaria",tag:"Rodízio",bbq:1,why:"Rodízio tradicional em Boa Viagem, com buffet farto de saladas, pratos quentes e sushi. Muito querido em Recife.",a:"Av. Visc. de Jequitinhonha, 138 – Boa Viagem, Recife",lat:-8.1301618,lng:-34.902904,cid:"9448284148200080261",web:"http://www.ponteiorecife.com.br/"},
+  salbrasaR:{n:"Sal e Brasa Recife",tag:"Rodízio",bbq:1,why:"Rede de rodízio grande e movimentada, a poucos minutos do aeroporto. Boa opção logo depois de chegar.",a:"Av. Pres. Dutra, 451 – Ibura, Recife",lat:-8.1220016,lng:-34.918434,cid:"6134819897642234638",web:"https://salebrasa.com.br/recife/"},
+  costelao:{n:"Costelão Grill",tag:"Churrasco",bbq:1,why:"Churrascaria no centrinho da vila, famosa pela costela no bafo.",a:"R. Esperança, 26 – Porto de Galinhas, Ipojuca",lat:-8.5048779,lng:-35.0050322,cid:"14070600991694980946"},
+  spettus:{n:"Spettus Premium",tag:"Steakhouse",bbq:1,why:"Steakhouse elegante em Boa Viagem, com carnes servidas à mesa e bar de saladas. Ótimo para um jantar especial.",a:"Av. Eng. Domingos Ferreira, 1500 – Boa Viagem, Recife",lat:-8.1037234,lng:-34.8891521,cid:"14582752293153470808",web:"http://www.grupospettus.com.br/novo/spettusbv"},
+  salbrasaM:{n:"Sal e Brasa Maceió",tag:"Rodízio",bbq:1,why:"Rodízio com garçons passando o tempo todo e buffet completo.",a:"R. Prof. Ernâni de Figueiredo Magalhães, 41 – Cruz das Almas, Maceió",lat:-9.6380136,lng:-35.698671,cid:"5094144653194224773",web:"https://salebrasa.com.br/"},
+  bigode:{n:"Churrascaria do Bigode",tag:"Rodízio",bbq:1,why:"Churrascaria tradicional da Jatiúca, preferida de quem mora em Maceió. Não aceita reserva.",a:"Av. Eng. Paulo Brandão Nogueira, 61 – Jatiúca, Maceió",lat:-9.6458111,lng:-35.7048416,cid:"5681470487461834447",web:"https://linktr.ee/Churrascariadobigode"},
+  green:{n:"Green Steakhouse",tag:"Cortes especiais",bbq:1,why:"Cortes nobres à la carte, ambiente climatizado e música ao vivo. Um jantar de carne a dois.",a:"Av. Dr. Antônio Gomes de Barros, 630 – Jatiúca, Maceió",lat:-9.6510523,lng:-35.7068098,cid:"12671661686695093637"},
+  mister:{n:"Mister Grill",tag:"Rodízio",bbq:1,why:"Rodízio na orla de Ponta Verde, com buffet amplo e música ao vivo.",a:"Av. Silvio Carlos Viana, 1911 – Ponta Verde, Maceió",lat:-9.6632323,lng:-35.7038512,cid:"11980723339658782141",web:"https://mistergrillchurrascaria.com.br/"},
   voar:{n:"Voar",tag:"Jantar especial",why:"Cozinha brasileira contemporânea, drinks autorais e salão bonito. A escolha para a primeira noite.",a:"R. Baltazar Pereira, 130 – Boa Viagem, Recife",lat:-8.1009327,lng:-34.8864069,cid:"84988825048556412",web:"https://grupoar2019.com.br/voar/"},
   bode:{n:"Entre Amigos – O Bode",tag:"Nordestino",why:"Clássico de Boa Viagem, com carne de bode, pratos regionais e cardápio amplo.",a:"R. Marquês de Valença, 50 – Boa Viagem, Recife",lat:-8.128961,lng:-34.9030906,cid:"8755904051948741955"},
   parra:{n:"Parraxaxá",tag:"Regional",why:"Buffet por quilo de comida pernambucana, com mesa de bolos e doces regionais.",a:"Av. Fernando Simões Barbosa, 1200 – Boa Viagem, Recife",lat:-8.1279966,lng:-34.9021569,cid:"14016965125105063363",web:"http://www.parraxaxa.com.br/"},
@@ -189,31 +200,31 @@ const R = {
 
 const DAYS = [
  {id:"d8",d:8,w:"Dom",where:"Recife · Boa Viagem",title:"Chegada e primeiro pôr do sol",summary:"Chegada às 16h, check-in e a primeira noite a dois na orla de Boa Viagem.",
-  plan:[["16h","Chegada e check-in, de preferência em Boa Viagem."],["Fim de tarde","Caminhada pelo calçadão com água de coco; a Feirinha de Boa Viagem funciona todos os dias."],["Noite","Jantar romântico no Pina ou em Boa Viagem."]],
-  eat:[["voar","Domingo: jantar das 19h à meia-noite"],["bode","Domingo: 11h à meia-noite"],["parra","Domingo: 11h30 às 22h"],["escr","Domingo: fecha às 21h",1]]},
+  plan:[["16h","Chegada e check-in, de preferência em Boa Viagem."],["Fim de tarde","Caminhada pelo calçadão com água de coco; a Feirinha de Boa Viagem funciona todos os dias."],["Noite","Primeiro rodízio da viagem: Ponteio, em Boa Viagem, ou Sal e Brasa, perto do aeroporto."]],
+  eat:[["ponteio","Domingo: 12h às 23h"],["salbrasaR","Domingo: jantar das 18h às 23h30"],["voar","Domingo: jantar das 19h à meia-noite"],["bode","Domingo: 11h à meia-noite"],["parra","Domingo: 11h30 às 22h"],["escr","Domingo: fecha às 21h",1]]},
  {id:"d9",d:9,w:"Seg",where:"Porto de Galinhas",title:"Piscinas naturais e Muro Alto",summary:"Bate-volta de cerca de 1h30. Saiam cedo para pegar a maré baixa.",
-  plan:[["Manhã","Jangada até as piscinas naturais. Combinem o horário pela tábua de marés."],["Tarde","Praia de Muro Alto, de mar calmo como uma piscina."],["Por quê","Segunda é dia de praia: muitos restaurantes e museus de Recife fecham."]],
-  eat:[["beiju","Segunda: 12h às 23h30"],["telha","Segunda: 10h às 22h"],["barca","Segunda: 12h às 23h"],["domingos","Segunda: 14h às 23h"]]},
+  plan:[["Manhã","Jangada até as piscinas naturais. Combinem o horário pela tábua de marés."],["Tarde","Praia de Muro Alto, de mar calmo como uma piscina."],["Almoço","Costelão Grill, no centrinho da vila, para a costela no bafo."],["Por quê","Segunda é dia de praia: muitos restaurantes e museus de Recife fecham."]],
+  eat:[["costelao","Segunda: 11h às 22h30"],["beiju","Segunda: 12h às 23h30"],["telha","Segunda: 10h às 22h"],["barca","Segunda: 12h às 23h"],["domingos","Segunda: 14h às 23h"]]},
  {id:"d10",d:10,w:"Ter",where:"Olinda e Recife",title:"Ladeiras, castelo e Marco Zero",summary:"O dia mais cultural: Olinda pela manhã, Instituto Ricardo Brennand à tarde e Recife Antigo ao entardecer.",
-  plan:[["Manhã","Olinda: ladeiras coloridas, Alto da Sé e Mosteiro de São Bento."],["Almoço","Oficina do Sabor, em Olinda, ou São Pedro, no centro de Recife."],["Tarde","Instituto Ricardo Brennand, castelo com jardins."],["Pôr do sol","Marco Zero e Rua do Bom Jesus, com barquinho até o Parque das Esculturas."]],
-  eat:[["oficina","Terça: 11h30 às 22h"],["spedro","Terça: só almoço, 12h às 15h"],["mercado","Terça: 6h às 18h"]]},
+  plan:[["Manhã","Olinda: ladeiras coloridas, Alto da Sé e Mosteiro de São Bento."],["Almoço","Oficina do Sabor, em Olinda, ou São Pedro, no centro de Recife."],["Tarde","Instituto Ricardo Brennand, castelo com jardins."],["Pôr do sol","Marco Zero e Rua do Bom Jesus, com barquinho até o Parque das Esculturas."],["Noite","Jantar de despedida de Recife no Spettus Premium."]],
+  eat:[["spettus","Terça: 11h30 às 23h"],["oficina","Terça: 11h30 às 22h"],["spedro","Terça: só almoço, 12h às 15h"],["mercado","Terça: 6h às 18h"]]},
  {id:"d11",d:11,w:"Qua",where:"Maceió · Ponta Verde",title:"Estrada até Maceió",summary:"Saída às 8h e chegada na hora do almoço. Tarde leve e jantar especial.",
-  plan:[["8h","Saída de Recife."],["Almoço","Na orla de Pajuçara ou Ponta Verde, logo após o check-in."],["Tarde","Praia de Ponta Verde."],["Noite","Jantar na Jatiúca ou em Ponta Verde."]],
-  tip:"O Lopana fecha às quartas, por isso ele ficou para quinta.",
-  eat:[["wanchako","Quarta: jantar das 18h às 23h"],["divina","Quarta: 11h30 à meia-noite"],["maria","Quarta: 12h às 16h e 18h à meia-noite"]]},
+  plan:[["8h","Saída de Recife."],["Almoço","Na orla de Pajuçara ou Ponta Verde, logo após o check-in."],["Tarde","Praia de Ponta Verde."],["Noite","Rodízio no Sal e Brasa ou jantar especial no Wanchako."]],
+  tip:"O Lopana fecha às quartas, por isso ficou para quinta. A Churrascaria do Bigode só abre à noite de quinta a sábado.",
+  eat:[["salbrasaM","Quarta: jantar das 18h às 23h"],["wanchako","Quarta: jantar das 18h às 23h"],["divina","Quarta: 11h30 à meia-noite"],["maria","Quarta: 12h às 16h e 18h à meia-noite"]]},
  {id:"d12",d:12,w:"Qui",where:"Maceió · Pajuçara",title:"Piscinas naturais da Pajuçara",summary:"O cartão-postal de Maceió: jangada até as piscinas a cerca de 2 km da costa, na maré baixa.",
-  plan:[["Manhã","Jangada até as piscinas naturais; levem snorkel."],["Tarde","Livre: piscina do hotel, massagem ou cochilo."],["Noite","Feirinha de Artesanato da Pajuçara e jantar."]],
-  eat:[["lopana","Quinta: 7h30 à meia-noite"],["picui","Quinta: só almoço, 11h às 17h"],["imperador","Quinta: 11h30 às 23h30"],["bodega","Quinta: 12h às 16h e 18h às 22h"]]},
+  plan:[["Manhã","Jangada até as piscinas naturais; levem snorkel."],["Tarde","Livre: piscina do hotel, massagem ou cochilo."],["Noite","Feirinha de Artesanato da Pajuçara e rodízio na Churrascaria do Bigode."]],
+  eat:[["bigode","Quinta: 11h às 22h"],["lopana","Quinta: 7h30 à meia-noite"],["picui","Quinta: só almoço, 11h às 17h"],["imperador","Quinta: 11h30 às 23h30"],["bodega","Quinta: 12h às 16h e 18h às 22h"]]},
  {id:"d13",d:13,w:"Sex",where:"São Miguel dos Milagres",title:"Rota Ecológica e peixe-boi",summary:"O dia mais especial da viagem, a cerca de 2h de Maceió. Vale carro alugado ou passeio contratado.",
   plan:[["Manhã","Praia do Patacho e Praia do Toque."],["Peixe-boi","Jangada pelo Rio Tatuamunha com a Associação Peixe-boi, cerca de R$ 100 por pessoa, com reserva."],["Fim de tarde","Pôr do sol na praia antes de voltar."]],
   eat:[["tacho","Sexta: 11h30 às 15h30 e 18h30 às 21h"],["toque","Sexta: 9h às 17h"],["quintal","Sexta: 12h às 15h e 19h às 21h; reservem"]]},
  {id:"d14",d:14,w:"Sáb",where:"Barra de São Miguel",title:"Falésias e Praia do Gunga",summary:"Falésias coloridas e uma faixa de areia entre o mar e a lagoa, a cerca de 40 minutos de Maceió.",
-  plan:[["Manhã","Mirante das Falésias do Gunga."],["Dia","Praia do Gunga, com buggy pelas falésias ou lancha pela lagoa."],["Pôr do sol","Barra de São Miguel, antes de voltar."]],
-  eat:[["gunga","Sábado: 8h às 17h"],["alagoana","Sábado: 11h à meia-noite"]]},
+  plan:[["Manhã","Mirante das Falésias do Gunga."],["Dia","Praia do Gunga, com buggy pelas falésias ou lancha pela lagoa."],["Pôr do sol","Barra de São Miguel, antes de voltar."],["Noite","Cortes especiais no Green Steakhouse."]],
+  eat:[["green","Sábado: 12h à meia-noite"],["gunga","Sábado: 8h às 17h"],["alagoana","Sábado: 11h à meia-noite"]]},
  {id:"d15",d:15,w:"Dom",where:"Francês e Massagueira",title:"Praia e pôr do sol na lagoa",summary:"Praia do Francês pela manhã e fim de tarde na Lagoa Mundaú. É feriado, então esperem movimento.",
-  plan:[["Manhã","Praia do Francês: piscina natural de um lado, ondas do outro."],["Fim de tarde","Massagueira, à beira da Lagoa Mundaú, com sururu e peixe frito."],["Noite","Último jantar a dois em Maceió."]],
-  tip:"O Wanchako fecha aos domingos. Para o jantar, Maria Antonieta e Divina Gula estão abertos.",
-  eat:[["massag","Domingo: 10h às 18h; cheguem antes do pôr do sol"],["maria","Domingo: 11h30 às 23h"],["divina","Domingo: 11h30 à meia-noite"]]}
+  plan:[["Manhã","Praia do Francês: piscina natural de um lado, ondas do outro."],["Fim de tarde","Massagueira, à beira da Lagoa Mundaú, com sururu e peixe frito."],["Noite","Último jantar a dois: rodízio no Mister Grill, na orla."]],
+  tip:"O Wanchako fecha aos domingos. Para o jantar, Mister Grill, Sal e Brasa, Maria Antonieta e Divina Gula estão abertos.",
+  eat:[["mister","Domingo: 11h30 às 23h"],["salbrasaM","Domingo: jantar das 18h às 22h"],["massag","Domingo: 10h às 18h; cheguem antes do pôr do sol"],["maria","Domingo: 11h30 às 23h"]]}
 ];
 
 const I = {
@@ -239,8 +250,8 @@ document.getElementById("days").innerHTML = DAYS.map(d=>`
     <div>
       <div class="eat-head"><h3>Onde comer</h3><span class="count">${d.eat.length} opções</span></div>
       <ul class="places">${d.eat.map(([k,h,warn])=>{const r=R[k];return `
-        <li class="place-row">
-          <div class="head"><h4>${r.n}</h4><span class="cat">${r.tag}</span></div>
+        <li class="place-row${r.bbq?" is-bbq":""}">
+          <div class="head"><h4>${r.n}</h4><span class="cat${r.bbq?" bbq":""}">${r.tag}</span></div>
           <p class="why">${r.why}</p>
           <div class="info">
             <div class="line">${I.pin}<span class="addr">${esc(r.a)}</span><button class="copy" type="button" data-copy="${esc(r.a)}">Copiar</button></div>
